@@ -2,7 +2,7 @@
 src/comfyui/nodes_loader.py — Nodos ComfyUI para cargar y apilar KQUBEs.
 
 KQubeLoader: carga un archivo .kqube y aplica las proyecciones cubicas
-             al modelo de difusion (SDXL/Flux) en tiempo de inferencia.
+             al modelo de difusion (SDXL) en tiempo de inferencia.
              Espera claves NATIVAS de ComfyUI (input_blocks/output_blocks).
 
 KQubeStacker: apila N archivos .kqube con pesos independientes.

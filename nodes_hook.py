@@ -277,7 +277,8 @@ class KQubeConstraint:
         except Exception as e:
             error_msg = f"[KQubeConstraint] Error: {e}"
             print(f"\033[91m{error_msg}\033[0m")
-            import traceback; traceback.print_exc()
+            import traceback
+            traceback.print_exc()
             return (model, error_msg)
 
 

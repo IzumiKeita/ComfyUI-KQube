@@ -32,9 +32,14 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/IzumiKeita/KQube"
-Repository = "https://github.com/IzumiKeita/KQube"
-Issues = "https://github.com/IzumiKeita/KQube/issues"
+Homepage = "https://github.com/IzumiKeita/ComfyUI-KQube"
+Repository = "https://github.com/IzumiKeita/ComfyUI-KQube"
+Issues = "https://github.com/IzumiKeita/ComfyUI-KQube/issues"
+
+[tool.comfy]
+PublisherId = "keitaizumi"
+DisplayName = "ComfyUI-KQube"
+Icon = ""
 
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]

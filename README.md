@@ -28,7 +28,7 @@ pip install safetensors numpy
 
 ### KQubeLoader
 Loads a .kqube file and applies it to the model.
-- **model**: SDXL/Flux model
+- **model**: SDXL
 - **kqube_name**: pick a .kqube from `models/kqube/`
 - **strength**: 0.0-2.0 (1.0 = full)
 - **strict_dna**: if True, requires exact DNA match
@@ -46,7 +46,7 @@ Previews compatibility without injecting.
 
 ### KQubeHook
 Applies KQUBE weights as post-LoRA forward hooks.
-- **model**: SDXL/Flux model
+- **model**: SDXL
 - **kqube_name**: .kqube file from `models/kqube/`
 - **strength**: scaling factor
 - **hook_position**: 'post' (after LoRA) or 'pre' (before)
