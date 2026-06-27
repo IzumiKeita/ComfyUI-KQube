@@ -1,0 +1,6 @@
+# KQube ComfyUI Custom Nodes - Dependencias mínimas
+# ComfyUI ya incluye torch, torchvision, etc.
+# Solo se necesitan dependencias adicionales específicas de KQube
+
+safetensors>=0.4.0
+numpy>=1.24.0
