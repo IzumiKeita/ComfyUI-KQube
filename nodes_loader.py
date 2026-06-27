@@ -2,7 +2,7 @@
 src/comfyui/nodes_loader.py — Nodos ComfyUI para cargar y apilar KQUBEs.
 
 KQubeLoader: carga un archivo .kqube y aplica las proyecciones cubicas
-             al modelo de difusion (SDXL) en tiempo de inferencia.
+             al modelo de difusion (SDXL/Flux) en tiempo de inferencia.
              Espera claves NATIVAS de ComfyUI (input_blocks/output_blocks).
 
 KQubeStacker: apila N archivos .kqube con pesos independientes.
@@ -106,28 +106,34 @@ def _get_unet_from_comfy_model(model) -> Tuple[Any, str]:
 # Wrapping: reemplazar nn.Linear con CubicProjection
 # ============================================================
 
-def _find_and_wrap_linears(module: nn.Module, layer_idx: int, total: int,
-                           r_cubic: int) -> int:
+def _wrap_all_linears(root: nn.Module, r_cubic: int) -> int:
+    """Recorre TODO el arbol de modulos y reemplaza nn.Linear por CubicProjection.
+
+    A diferencia de _find_and_wrap_linears que dependia de una deteccion
+    de bloques (input_blocks/attentions), esta version itera flat sobre
+    todos los modulos sin importar la estructura. Necesario porque
+    ComfyUI parchea el modelo y puede alterar la jerarquia de bloques.
+
+    Returns:
+        Numero total de capas envueltas.
+    """
     wrapped = 0
-    for name, child in module.named_children():
-        if isinstance(child, nn.Linear) and child.in_features > 8:
-            r = _dynamic_r(layer_idx, total, name, r_cubic)
-            setattr(module, name, CubicProjection(child, r))
+    # Iteramos sobre todos los modulos para encontrar padres con hijos Linear.
+    # Excluimos los Linear que ya estan dentro de un CubicProjection (son sus
+    # parametros internos y no deben re-envolverse).
+    for parent_name, parent in root.named_modules():
+        children_to_wrap = {}
+        for name, child in parent.named_children():
+            if isinstance(child, nn.Linear) and child.in_features > 8:
+                # No envolver el Linear interno de un CubicProjection
+                if not isinstance(parent, CubicProjection):
+                    children_to_wrap[name] = child
+        
+        for name, linear in children_to_wrap.items():
+            setattr(parent, name, CubicProjection(linear, r_cubic))
             wrapped += 1
-        elif isinstance(child, nn.Module):
-            wrapped += _find_and_wrap_linears(child, layer_idx, total, r_cubic)
+    
     return wrapped
-
-
-def _dynamic_r(layer_idx: int, total: int, proj_name: str, base_r: int) -> int:
-    r = base_r
-    if total > 1:
-        pos = layer_idx / max(1, total - 1)
-        mid = 0.75 + 0.75 * (1.0 - abs(pos * 2.0 - 1.0))
-        r = int(round(base_r * mid))
-    if proj_name in ("to_out", "o_proj", "ff_net_2"):
-        r = int(r * 1.12)
-    return max(4, min(base_r * 2, r))
 
 
 # ============================================================
@@ -213,35 +219,8 @@ def apply_kqube_to_model(
     if version < "2.1":
         compat_msg = "Modo: sin verificacion"
 
-    # Contar bloques para r dinamico
-    blocks = []
-    if hasattr(unet, "input_blocks"):
-        for blk in unet.input_blocks:
-            if hasattr(blk, "attentions") and blk.attentions:
-                blocks.extend(blk.attentions)
-        if hasattr(unet, "middle_block") and hasattr(unet.middle_block, "attentions"):
-            blocks.extend(unet.middle_block.attentions)
-        if hasattr(unet, "output_blocks"):
-            for blk in unet.output_blocks:
-                if hasattr(blk, "attentions") and blk.attentions:
-                    blocks.extend(blk.attentions)
-    elif hasattr(unet, "transformer_blocks"):
-        blocks = list(unet.transformer_blocks)
-    elif hasattr(unet, "double_blocks"):
-        blocks = list(unet.double_blocks)
-        if hasattr(unet, "single_blocks"):
-            blocks.extend(list(unet.single_blocks))
-    else:
-        for child in unet.children():
-            if any(isinstance(m, nn.Linear) for m in child.modules()):
-                blocks.append(child)
-
-    total = max(1, len(blocks))
-
-    # ── 1. Wrapping ──
-    total_wrapped = 0
-    for idx, block in enumerate(blocks):
-        total_wrapped += _find_and_wrap_linears(block, idx, total, r_cubic)
+    # ── 1. Wrapping: reemplazar todos los nn.Linear con CubicProjection ──
+    total_wrapped = _wrap_all_linears(unet, r_cubic)
 
     # ── 2. Cargar pesos (claves nativas ComfyUI) ──
     weights = load_kqube_weights(kqube_path)
@@ -264,7 +243,7 @@ def apply_kqube_to_model(
     log_msg = (
         f"[KQubeLoader] {os.path.basename(kqube_path)}\n"
         f"  Etapa: {stage} | Familia: {family} | r={r_cubic}\n"
-        f"  {total_wrapped} capas cubicizadas en {total} bloques ({unet_type})\n"
+        f"  {total_wrapped} capas cubicizadas ({unet_type})\n"
         f"  Cargados: {len(weights)} tensores ({mapping_msg})\n"
         f"  Strength: {strength:.2f} | Subspace: {applied_subspace}\n"
         f"  {compat_msg}"

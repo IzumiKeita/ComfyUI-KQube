@@ -1,6 +1,6 @@
 [project]
 name = "kqube-comfyui"
-version = "1.0.0"
+version = "1.0.1"
 description = "Custom nodes para ComfyUI: carga y aplicación de proyecciones KQUBE (.kqube) en modelos de difusión (SDXL, Flux, SD3)"
 readme = "README.md"
 license = {text = "MIT"}
