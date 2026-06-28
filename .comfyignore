@@ -1,8 +1,10 @@
-# Archivos excluidos del Comfy Registry (no se empaquetan en la distribucion)
-node.zip
-publish.ps1
-*.md
-.gitattributes
-.gitignore
-.git/
-pyarmor_runtime_000000/
+# Keep pyarmor runtime (required for obfuscated modules)
+!.pyd
+
+# Standard ignores
+__pycache__/
+*.pyc
+.DS_Store
+*.zip
+*.ps1
+.ruff_cache/
