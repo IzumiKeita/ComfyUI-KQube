@@ -1,56 +1,15 @@
 [project]
-name = "kqube-comfyui"
+name = "ComfyUI_KQube"
 version = "1.0.0"
-description = "Custom nodes para ComfyUI: carga y aplicación de proyecciones KQUBE (.kqube) en modelos de difusión (SDXL, Flux, SD3)"
-readme = "README.md"
-license = {text = "MIT"}
-authors = [
-    {name = "KQube Team", email = "kqube@example.com"}
-]
-keywords = ["comfyui", "custom-nodes", "kqube", "stable-diffusion", "flux", "diffusion-models"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Topic :: Multimedia :: Graphics",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-]
-requires-python = ">=3.10"
-dependencies = [
-    "safetensors>=0.4.0",
-    "numpy>=1.24.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0",
-    "black>=23.0",
-    "ruff>=0.1.0",
-]
+description = "Custom nodes for loading and applying KQUBE (.kqube) cubic projection layers onto diffusion models (SDXL, Flux, SD3)"
+license = {file = "LICENSE"}
+authors = [{name = "keitaizumi"}]
+dependencies = ["safetensors>=0.4.0", "numpy>=1.24.0"]
 
 [project.urls]
-Homepage = "https://github.com/IzumiKeita/ComfyUI_KQube"
 Repository = "https://github.com/IzumiKeita/ComfyUI_KQube"
-Issues = "https://github.com/IzumiKeita/ComfyUI_KQube/issues"
 
-[build-system]
-requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["KQube*"]
-
-[tool.setuptools.package-dir]
-"" = "."
-
-[tool.ruff]
-line-length = 100
-target-version = "py310"
-
-[tool.black]
-line-length = 100
-target-version = ["py310"]
+[tool.comfy]
+PublisherId = "izumikeita"
+DisplayName = "ComfyUI-KQube"
+Icon = ""
