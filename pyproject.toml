@@ -1,7 +1,7 @@
 [project]
 name = "ComfyUI_KQube"
 version = "1.0.0"
-description = "Custom nodes for loading and applying KQUBE (.kqube) cubic projection layers onto diffusion models (SDXL, Flux, SD3)"
+description = "Custom nodes for loading and applying KQUBE (.kqube) cubic projection layers onto diffusion models (SDXL)"
 license = {file = "LICENSE"}
 authors = [{name = "keitaizumi"}]
 dependencies = ["safetensors>=0.4.0", "numpy>=1.24.0"]
@@ -10,6 +10,6 @@ dependencies = ["safetensors>=0.4.0", "numpy>=1.24.0"]
 Repository = "https://github.com/IzumiKeita/ComfyUI_KQube"
 
 [tool.comfy]
-PublisherId = "izumikeita"
+PublisherId = "keitaizumi"
 DisplayName = "ComfyUI-KQube"
 Icon = ""

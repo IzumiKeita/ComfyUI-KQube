@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# PyArmor runtime binary — must be tracked for Comfy Registry
+*.pyd binary

@@ -1,0 +1,8 @@
+# Archivos excluidos del Comfy Registry (no se empaquetan en la distribucion)
+node.zip
+publish.ps1
+*.md
+.gitattributes
+.gitignore
+.git/
+pyarmor_runtime_000000/
