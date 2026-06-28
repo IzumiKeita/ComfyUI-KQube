@@ -1,4 +1,4 @@
-# ComfyUI-KQube
+# ComfyUI_KQube
 
 Custom nodes for loading and applying KQUBE (.kqube) projection layers onto diffusion models (SDXL, Flux, SD3).
 
@@ -7,7 +7,7 @@ Custom nodes for loading and applying KQUBE (.kqube) projection layers onto diff
 ```bash
 # Option A: Git clone (recommended)
 cd ComfyUI/custom_nodes
-git clone https://github.com/IzumiKeita/ComfyUI-KQube.git KQube
+git clone https://github.com/IzumiKeita/ComfyUI_KQube.git KQube
 
 # Option B: Download ZIP and extract as KQube/
 #   Download the ZIP, extract it, and rename the folder to "KQube"
@@ -82,8 +82,8 @@ KQube/
 
 ```bash
 # Clone for development
-git clone https://github.com/IzumiKeita/ComfyUI-KQube.git
-cd ComfyUI-KQube
+git clone https://github.com/IzumiKeita/ComfyUI_KQube.git
+cd ComfyUI_KQube
 
 # Install dependencies
 pip install -r requirements.txt

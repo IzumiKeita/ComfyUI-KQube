@@ -64,12 +64,6 @@ def apply_kqube_hooks(
 
     unet, unet_type = _get_unet_from_comfy_model(comfy_model)
 
-    # ── 0. Determinar dispositivo real del UNet ──
-    try:
-        unet_device = next(unet.parameters()).device
-    except StopIteration:
-        unet_device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
     compat_msg = f"Modo: family={family}"
     if version < "2.1":
         compat_msg = "Modo: sin verificacion"
@@ -132,7 +126,7 @@ def apply_kqube_hooks(
                     if pname not in group:
                         continue
                     tensor = group[pname].to(
-                        device=unet_device,
+                        device=hook.in_proj.weight.device,
                         dtype=hook.in_proj.weight.dtype)
                     target_obj = hook
                     for attr in pname.split('.'):
@@ -147,14 +141,6 @@ def apply_kqube_hooks(
         mapping_msg = f"hooks ({loaded} cargados por shape)"
     else:
         mapping_msg = "hooks (sin coincidencias)"
-
-    # ── 2b. Mover todos los hooks al dispositivo del UNet ──
-    for hook in hooks:
-        try:
-            if hasattr(hook, 'to'):
-                hook.to(unet_device)
-        except Exception:
-            pass
 
     total_hooks = len(hooks)
 
@@ -241,8 +227,7 @@ class KQubeHook:
         except Exception as e:
             error_msg = f"[KQubeHook] Error: {e}"
             print(f"\033[91m{error_msg}\033[0m")
-            import traceback
-            traceback.print_exc()
+            import traceback; traceback.print_exc()
             return (model, error_msg)
 
 
@@ -292,8 +277,7 @@ class KQubeConstraint:
         except Exception as e:
             error_msg = f"[KQubeConstraint] Error: {e}"
             print(f"\033[91m{error_msg}\033[0m")
-            import traceback
-            traceback.print_exc()
+            import traceback; traceback.print_exc()
             return (model, error_msg)
 
 

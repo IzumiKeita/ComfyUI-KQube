@@ -1,4 +1,4 @@
-# ComfyUI-KQube
+# ComfyUI_KQube
 
 Custom nodes para cargar y aplicar proyecciones KQUBE (.kqube) en modelos de difusion (SDXL, Flux, SD3).
 
@@ -7,7 +7,7 @@ Custom nodes para cargar y aplicar proyecciones KQUBE (.kqube) en modelos de dif
 ```bash
 # Opcion A: Git clone (recomendado)
 cd ComfyUI/custom_nodes
-git clone https://github.com/IzumiKeita/ComfyUI-KQube.git KQube
+git clone https://github.com/IzumiKeita/ComfyUI_KQube.git KQube
 
 # Opcion B: Descarga ZIP y extrae como KQube/
 #   Descarga el ZIP, extraelo y renombra la carpeta a "KQube"

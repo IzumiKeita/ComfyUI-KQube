@@ -1,6 +1,6 @@
 [project]
 name = "kqube-comfyui"
-version = "1.0.1"
+version = "1.0.0"
 description = "Custom nodes para ComfyUI: carga y aplicación de proyecciones KQUBE (.kqube) en modelos de difusión (SDXL, Flux, SD3)"
 readme = "README.md"
 license = {text = "MIT"}
@@ -32,14 +32,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/IzumiKeita/ComfyUI-KQube"
-Repository = "https://github.com/IzumiKeita/ComfyUI-KQube"
-Issues = "https://github.com/IzumiKeita/ComfyUI-KQube/issues"
-
-[tool.comfy]
-PublisherId = "keitaizumi"
-DisplayName = "ComfyUI-KQube"
-Icon = ""
+Homepage = "https://github.com/IzumiKeita/ComfyUI_KQube"
+Repository = "https://github.com/IzumiKeita/ComfyUI_KQube"
+Issues = "https://github.com/IzumiKeita/ComfyUI_KQube/issues"
 
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
